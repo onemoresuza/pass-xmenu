@@ -109,11 +109,9 @@ passfile="$(
     -type f \
     -name "*.gpg" \
     -exec sh -c '
-      file="${1}"
-      dir="${file%/*}"
-      basename="${file#"${dir}/"}"
+      basename="${1#"${2}/"}"
       basename="${basename%.*}"
-      printf "%s\n" "${basename}"' shell {} \; \
+      printf "%s\n" "${basename}"' shell {} "${PREFIX}" \; \
     | ${XMENU} ${XMENU_PROMPT_FLAG} "Pick a password:"
 )" || {
   rperr "No password picked."
