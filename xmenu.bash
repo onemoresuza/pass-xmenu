@@ -242,6 +242,19 @@ for cmd in ${pickdmacro}; do
       *) ACTION="${cmd#?}";;
     esac
   elif [[ "${cmd}" =~ ^@.* ]]; then
+    #
+    # If the default action is "prompt" and the macro does not contain an action
+    # until now.
+    #
+    if [[ "${ACTION}" == "prompt" ]]; then
+      ACTION="$(
+        printf "paste\npaste-term\ntype" \
+          | ${XMENU} ${XMENU_PROMPT_FLAG} "Pick an Action:"
+      )" || {
+        rperr "No Action Picked."
+        exit 1
+      }
+    fi
     field="${cmd#?}"
     case "${ACTION}" in
       "paste")
