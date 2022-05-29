@@ -9,7 +9,7 @@
 # shellcheck disable=SC2016
 #
 
-PROGNAME="pass menu"
+PROGNAME="pass xmenu"
 XMENU="${PASSWORD_STORE_XMENU:-dmenu} ${PASSWORD_STORE_XMENU_FLAGS}"
 XMENU_PROMPT_FLAG="${PASSWORD_STORE_XMENU_PROMPT_FLAG:-"-p"}"
 ACTION="${PASSWORD_STORE_XMENU_DEFAULT_ACTION:-type}"
@@ -26,7 +26,8 @@ rperr() {
     fmtstr="$(printf "%s" "${fmtstr}" \
       | sed 's/\\033\[[[:digit:];[:upper:]]*m//g')"
     printf "Exit 1" \
-      | ${XMENU} ${XMENU_PROMPT_FLAG} "$(printf "${fmtstr}" "${@}")"
+      | ${XMENU} ${XMENU_PROMPT_FLAG} \
+        "$(printf "%s: ${fmtstr}" "${PROGNAME}" "${@}")"
   fi
 }
 
