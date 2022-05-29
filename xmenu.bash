@@ -154,7 +154,7 @@ EOF
 #
 # Autofill prompt.
 #
-[[ "${autofill}" == "prompt" ]] && {
+[[ "${autofill}" == "prompt" && "${#macros[@]}" -gt 0 ]] && {
   autofill="$(
     printf "Yes\nNo\n" | ${XMENU} ${XMENU_PROMPT_FLAG} "Autofill?"
   )" || {
