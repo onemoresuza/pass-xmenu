@@ -54,7 +54,7 @@ prompt the user to pick an action, then execute that action with the field
 
 ## Environment Variables
 1. `PASSWORD_STORE_XMENU`: Sets the xmenu to be used (default: `dmenu`);
-2. `PASSWORD_STORE_XMENU_FLAGS`: The flags to used when calling the xmenu
+2. `PASSWORD_STORE_XMENU_FLAGS`: The flags to be used when calling the xmenu
    (default: `""`);
 3. `PASSWORD_STORE_XMENU_PROMPT_FLAG`: The xmenu prompt flag (default: `-p`);
 4. `PASSWORD_STORE_XMENU_DEFAULT_ACTION`: the default action to execute
