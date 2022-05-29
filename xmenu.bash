@@ -295,6 +295,12 @@ for cmd in ${pickdmacro}; do
       esac
     done
   else
+    #
+    # Some times when any of the paste actions are executed, the call to
+    # `xdotool key` does not work. This call to sleep is a workaround to fix
+    # it.
+    #
+    sleep 0.1
     [ -n "$(xdotool key --clearmodifiers "${cmd}" 2>&1)" ] && {
       rperr "Invalid key \"%s\"." "${cmd}"
       exit 1
