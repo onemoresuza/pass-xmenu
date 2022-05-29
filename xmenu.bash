@@ -40,8 +40,8 @@ randstr() {
 #
 # Option parsing.
 #
-lopts="autofill:,type,paste,paste-term"
-sopts="a:tpP"
+lopts="autofill:,type,paste,paste-term,copy"
+sopts="a:tpPc"
 argv="$(getopt -l "${lopts}" -o "${sopts}" -- "${@}" 2>&1)" || {
   argv="${argv%[[:space:]]*}"
   argv="${argv%%[[:cntrl:]]*}"
@@ -50,9 +50,7 @@ argv="$(getopt -l "${lopts}" -o "${sopts}" -- "${@}" 2>&1)" || {
 }
 eval set -- "${argv}"
 autofill="prompt"
-type=""
-paste=""
-pasteterm=""
+declare -a incmpopts
 while true; do
   case "${1}" in
     "--autofill" | "-a")
@@ -65,26 +63,34 @@ while true; do
       fi
       ;;
     "--type" | "-t") 
-      type="1"
+      incmpopts+=("1")
       ACTION="type"
-      if [[ -n "${paste}" || -n "${pasteterm}" ]]; then
-        rperr "-p/--paste, -P/--paste-term and -t/--type are incompatible."
+      if [[ "${#incmpopts[@]}" -gt 1 ]]; then
+        rperr "-p/--paste, -P/--paste-term, -t/--type and -c/--copy are incompatible."
         exit 1
       fi
       ;;
     "--paste" | "-p") 
-      paste="1"
+      incmpopts+=("1")
       ACTION="paste"
-      if [[ -n "${type}" || -n "${pasteterm}" ]]; then
-        rperr "-p/--paste, -P/--paste-term and -t/--type are incompatible."
+      if [[ "${#incmpopts[@]}" -gt 1 ]]; then
+        rperr "-p/--paste, -P/--paste-term, -t/--type and -c/--copy are incompatible."
         exit 1
       fi
       ;;
     "--paste-term" | "-P") 
-      pasteterm="1"
+      incmpopts+=("1")
       ACTION="paste-term"
-      if [[ -n "${paste}" || -n "${type}" ]]; then
-        rperr "-p/--paste, -P/--paste-term and -t/--type are incompatible."
+      if [[ "${#incmpopts[@]}" -gt 1 ]]; then
+        rperr "-p/--paste, -P/--paste-term, -t/--type and -c/--copy are incompatible."
+        exit 1
+      fi
+      ;;
+    "--copy" | "-c") 
+      incmpopts+=("1")
+      ACTION="copy"
+      if [[ "${#incmpopts[@]}" -gt 1 ]]; then
+        rperr "-p/--paste, -P/--paste-term, -t/--type and -c/--copy are incompatible."
         exit 1
       fi
       ;;
@@ -96,8 +102,9 @@ done
 #
 # Check ACTION.
 #
-[[ "${ACTION}" =~ (paste|paste-term|type|prompt) ]] || {
-  rperr "Valid actions are \"paste\", \"paste-term\" or \"type\"."
+[[ "${ACTION}" =~ (paste|paste-term|type|prompt|copy) ]] || {
+  rperr "Valid actions are \"paste\", \"paste-term\","
+  rperr "\"type\", \"propmt\" or \"copy\"."
   exit 1
 }
 
@@ -276,6 +283,10 @@ for cmd in ${pickdmacro}; do
           xdotool type --clearmodifiers "${contents[${i}]#*:[[:space:]]}"
         '
         ;;
+      "copy")
+        actioncmd='
+          printf "%s" "${contents[${i}]#*:[[:space:]]}" | xclip -sel "${X_SELECTION}" -i
+        '
     esac
     for i in "${!contents[@]}"; do
       case "${field}" in
