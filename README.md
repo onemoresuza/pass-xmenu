@@ -26,7 +26,7 @@ $ make install \
 **Note**: If `PASSWORD_STORE_SIGNING_KEY` is set, remember to run:
 
 ```
-$ gpg --default-key=<.gpg-id-key> --detach-sign <extension.bash>
+$ gpg --default-key=<.gpg-id-key> --detach-sign xmenu.bash
 ```
 and move the `.sig` file to the same directory as `xmenu.bash`.
 
