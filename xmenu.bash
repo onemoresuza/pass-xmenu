@@ -38,11 +38,29 @@ randstr() {
   tr -dc "${1}" </dev/urandom | dd count=1 bs="${1}" 2>/dev/null
 }
 
+xmenu_usage() {
+  #
+  # Display command's usage.
+  #
+  cat <<-_EOF
+  Usage: ${PROGRAM} ${COMMAND} [ OPTIONS ]...
+  Use an xmenu to choose a password and autofill fields.
+
+  -a, --autofill VALUE     Set the autofill behavior. VALUE can be "true",
+                           "false" or "prompt".
+  -p, --paste              Set the action to paste (control+v).
+  -p, --paste-term         Set the action to paste-term (control+shift+v).
+  -t, --type               Set the action to type.
+  -c, --copy               Set the action to type.
+  -h, --help               Display this help message.
+_EOF
+}
+
 #
 # Option parsing.
 #
-lopts="autofill:,type,paste,paste-term,copy"
-sopts="a:tpPc"
+lopts="autofill:,type,paste,paste-term,copy,help"
+sopts="a:tpPch"
 argv="$(getopt -l "${lopts}" -o "${sopts}" -- "${@}" 2>&1)" || {
   argv="${argv%[[:space:]]*}"
   argv="${argv%%[[:cntrl:]]*}"
@@ -95,6 +113,7 @@ while true; do
         exit 1
       fi
       ;;
+    "--help" | "-h") xmenu_usage; exit 0;;
     "--") shift; break;;
   esac
   shift
