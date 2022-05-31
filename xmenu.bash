@@ -200,7 +200,7 @@ if [ -z "${pickdmacro}" ]; then
   #
   if [[ "${ACTION}" == "prompt" ]]; then
     pickdmacro="%$(
-      printf "paste\npaste-term\ntype" \
+      printf "copy\npaste\npaste-term\ntype" \
         | ${XMENU} ${XMENU_PROMPT_FLAG} "Pick an Action:"
     )" || {
       rperr "No Action Picked."
@@ -231,7 +231,7 @@ for cmd in ${pickdmacro}; do
     case "${cmd#?}" in
       "prompt")
         ACTION="%$(
-          printf "paste\npaste-term\ntype" \
+          printf "copy\npaste\npaste-term\ntype" \
             | ${XMENU} ${XMENU_PROMPT_FLAG} "Pick an Action:"
         )" || {
           rperr "No Action Picked."
@@ -256,7 +256,7 @@ for cmd in ${pickdmacro}; do
     #
     if [[ "${ACTION}" == "prompt" ]]; then
       ACTION="$(
-        printf "paste\npaste-term\ntype" \
+        printf "copy\npaste\npaste-term\ntype" \
           | ${XMENU} ${XMENU_PROMPT_FLAG} "Pick an Action:"
       )" || {
         rperr "No Action Picked."
@@ -265,6 +265,11 @@ for cmd in ${pickdmacro}; do
     fi
     field="${cmd#?}"
     case "${ACTION}" in
+      "copy")
+        actioncmd='
+          clip "${contents[${i}]#*:[[:space:]]}" "${passfile}"
+        '
+        ;;
       "paste")
         actioncmd='
           printf "%s" "${contents[${i}]#*:[[:space:]]}" | xclip -sel "${X_SELECTION}" -i
@@ -284,10 +289,6 @@ for cmd in ${pickdmacro}; do
           xdotool type --clearmodifiers "${contents[${i}]#*:[[:space:]]}"
         '
         ;;
-      "copy")
-        actioncmd='
-          printf "%s" "${contents[${i}]#*:[[:space:]]}" | xclip -sel "${X_SELECTION}" -i
-        '
     esac
     for i in "${!contents[@]}"; do
       case "${field}" in
