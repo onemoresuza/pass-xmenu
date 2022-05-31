@@ -9,25 +9,25 @@
 # shellcheck disable=SC2016
 #
 
-PROGNAME="pass xmenu"
 XMENU="${PASSWORD_STORE_XMENU:-dmenu} ${PASSWORD_STORE_XMENU_FLAGS}"
 XMENU_PROMPT_FLAG="${PASSWORD_STORE_XMENU_PROMPT_FLAG:-"-p"}"
 ACTION="${PASSWORD_STORE_XMENU_DEFAULT_ACTION:-type}"
 
 rperr() {
   #
-  # Report an error to stderr.
+  # Report an error to stderr or the xmenu.
   #
+  local progname="${PROGRAM} ${COMMAND}"
   fmtstr="${1}"
   shift
   if tty 1>/dev/null 2>&1; then
-    printf "%s: ${fmtstr}\n" "${PROGNAME}" "${@}" 1>&2
+    printf "%s: ${fmtstr}\n" "${progname}" "${@}" 1>&2
   else
     fmtstr="$(printf "%s" "${fmtstr}" \
       | sed 's/\\033\[[[:digit:];[:upper:]]*m//g')"
     printf "Exit 1" \
       | ${XMENU} ${XMENU_PROMPT_FLAG} \
-        "$(printf "%s: ${fmtstr}" "${PROGNAME}" "${@}")"
+        "$(printf "%s: ${fmtstr}" "${progname}" "${@}")"
   fi
 }
 
