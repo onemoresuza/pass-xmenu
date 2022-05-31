@@ -272,16 +272,14 @@ for cmd in ${pickdmacro}; do
         ;;
       "paste")
         actioncmd='
-          printf "%s" "${contents[${i}]#*:[[:space:]]}" | xclip -sel "${X_SELECTION}" -i
+          CLIP_TIME=1 clip "${contents[${i}]#*:[[:space:]]}" "${passfile}"
           xdotool key --clearmodifiers control+v
-          xclip -sel "${X_SELECTION}" -i /dev/null
         '
         ;;
       "paste-term")
         actioncmd='
-          printf "%s" "${contents[${i}]#*:[[:space:]]}" | xclip -sel "${X_SELECTION}" -i
+          CLIP_TIME=1 clip "${contents[${i}]#*:[[:space:]]}" "${passfile}"
           xdotool key --clearmodifiers control+shift+v
-          xclip -sel "${X_SELECTION}" -i /dev/null
         '
         ;;
       "type")
