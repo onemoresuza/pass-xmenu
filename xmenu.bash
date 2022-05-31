@@ -112,7 +112,7 @@ done
 #
 # Prompt the user to pick a password.
 #
-passfile="$(
+path="$(
   find "${PREFIX}" \
     -type f \
     -name "*.gpg" \
@@ -125,6 +125,7 @@ passfile="$(
   rperr "No password picked."
   exit 1
 }
+passfile="${PREFIX}/${path}.gpg"
 
 #
 # Store the file contents and macros and make sure they are filled with random
@@ -156,7 +157,7 @@ while IFS= read -r line; do
     esac
   fi
 done <<EOF
-$(${GPG} -d "${GPG_OPTS[@]}" "${PREFIX}/${passfile}.gpg")
+$(${GPG} -d "${GPG_OPTS[@]}" "${passfile}")
 EOF
 
 #
@@ -267,18 +268,18 @@ for cmd in ${pickdmacro}; do
     case "${ACTION}" in
       "copy")
         actioncmd='
-          clip "${contents[${i}]#*:[[:space:]]}" "${passfile}"
+          clip "${contents[${i}]#*:[[:space:]]}" "${path}"
         '
         ;;
       "paste")
         actioncmd='
-          CLIP_TIME=1 clip "${contents[${i}]#*:[[:space:]]}" "${passfile}"
+          CLIP_TIME=1 clip "${contents[${i}]#*:[[:space:]]}" "${path}"
           xdotool key --clearmodifiers control+v
         '
         ;;
       "paste-term")
         actioncmd='
-          CLIP_TIME=1 clip "${contents[${i}]#*:[[:space:]]}" "${passfile}"
+          CLIP_TIME=1 clip "${contents[${i}]#*:[[:space:]]}" "${path}"
           xdotool key --clearmodifiers control+shift+v
         '
         ;;
