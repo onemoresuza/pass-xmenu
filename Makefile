@@ -3,8 +3,7 @@ DESTDIR ?=
 EXTENSION = xmenu.bash
 
 install:
-	cp $(EXTENSION) $(DESTDIR)$(PREFIX)/
-	chmod 755 $(DESTDIR)$(PREFIX)/$(EXTENSION)
+	@install -vm 0755 $(EXTENSION) $(DESTDIR)$(PREFIX)/
 
 uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/$(EXTENSION)
