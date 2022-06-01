@@ -1,9 +1,11 @@
-PREFIX ?= /usr/lib/password-store/extensions
+PREFIX ?= /usr
+EXTENSIONS_DIR ?= /lib/password-store/extensions
 DESTDIR ?=
-EXTENSION = xmenu.bash
+SCRIPT = xmenu.bash
 
 install:
-	@install -vm 0755 $(EXTENSION) $(DESTDIR)$(PREFIX)/
+	@install -vd $(DESTDIR)$(PREFIX)/$(EXTENSIONS_DIR) 
+	@install -vm 0755 $(SCRIPT) $(DESTDIR)$(PREFIX)/
 
 uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/$(EXTENSION)
