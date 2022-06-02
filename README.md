@@ -20,7 +20,8 @@ The variable `PASSWORD_STORE_ENABLE_EXTENSIONS` must be set to `true`.
 
 ```
 $ make install \
-	PREFIX="${PASSWORD_STORE_EXTENSIONS_DIR:-${PASSWORD_STORE_DIR:-"${HOME}/.password-store/.extensions"}}"
+	PREFIX="" \
+	EXTENSIONS_DIR="${PASSWORD_STORE_EXTENSIONS_DIR:-${PASSWORD_STORE_DIR:-"${HOME}/.password-store/.extensions"}}"
 ```
 
 **Note**: If `PASSWORD_STORE_SIGNING_KEY` is set, remember to run:
