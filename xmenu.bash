@@ -232,15 +232,21 @@ if [ -z "${pickdmacro}" ]; then
   #
   # Set field.
   #
-  pickdmacro="${pickdmacro} @$(
-    for field in "${contents[@]}"; do
-      printf "%s\n" "${field%%:*}"
-    done \
-      | ${XMENU} ${XMENU_PROMPT_FLAG} "Pick a field"
-  )" || {
-    rperr "No field picked."
-    exit 1
-  }
+  # For files with just a password, there's no need to prompt the user.
+  #
+  if [[ "${#contents[@]}" -eq 1 ]]; then
+    pickdmacro="${pickdmacro} @${contents[0]}"
+  else
+    pickdmacro="${pickdmacro} @$(
+      for field in "${contents[@]}"; do
+        printf "%s\n" "${field%%:*}"
+      done \
+        | ${XMENU} ${XMENU_PROMPT_FLAG} "Pick a field"
+    )" || {
+      rperr "No field picked."
+      exit 1
+    }
+  fi
 fi
 
 #
