@@ -48,10 +48,8 @@ xmenu_usage() {
 
   -a, --autofill VALUE     Set the autofill behavior. VALUE can be "true",
                            "false" or "prompt".
-  -p, --paste              Set the action to paste (control+v).
-  -P, --paste-term         Set the action to paste-term (control+shift+v).
-  -t, --type               Set the action to type.
-  -c, --copy               Set the action to type.
+  -A, --action   ACTION    Set the default action. ACTION can be "paste",
+                           "paste-term", "type", "prompt" and "copy".
   -h, --help               Display this help message.
 _EOF
 }
