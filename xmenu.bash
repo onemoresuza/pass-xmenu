@@ -59,8 +59,8 @@ _EOF
 #
 # Option parsing.
 #
-lopts="autofill:,type,paste,paste-term,copy,help"
-sopts="a:tpPch"
+lopts="autofill:,action:,help"
+sopts="a:A:h"
 argv="$(getopt -l "${lopts}" -o "${sopts}" -- "${@}" 2>&1)" || {
   argv="${argv%[[:space:]]*}"
   argv="${argv%%[[:cntrl:]]*}"
@@ -69,7 +69,6 @@ argv="$(getopt -l "${lopts}" -o "${sopts}" -- "${@}" 2>&1)" || {
 }
 eval set -- "${argv}"
 autofill="prompt"
-declare -a incmpopts
 while true; do
   case "${1}" in
     "--autofill" | "-a")
@@ -81,38 +80,7 @@ while true; do
         exit 1
       fi
       ;;
-    "--type" | "-t") 
-      incmpopts+=("1")
-      ACTION="type"
-      if [[ "${#incmpopts[@]}" -gt 1 ]]; then
-        rperr "-p/--paste, -P/--paste-term, -t/--type and -c/--copy are incompatible."
-        exit 1
-      fi
-      ;;
-    "--paste" | "-p") 
-      incmpopts+=("1")
-      ACTION="paste"
-      if [[ "${#incmpopts[@]}" -gt 1 ]]; then
-        rperr "-p/--paste, -P/--paste-term, -t/--type and -c/--copy are incompatible."
-        exit 1
-      fi
-      ;;
-    "--paste-term" | "-P") 
-      incmpopts+=("1")
-      ACTION="paste-term"
-      if [[ "${#incmpopts[@]}" -gt 1 ]]; then
-        rperr "-p/--paste, -P/--paste-term, -t/--type and -c/--copy are incompatible."
-        exit 1
-      fi
-      ;;
-    "--copy" | "-c") 
-      incmpopts+=("1")
-      ACTION="copy"
-      if [[ "${#incmpopts[@]}" -gt 1 ]]; then
-        rperr "-p/--paste, -P/--paste-term, -t/--type and -c/--copy are incompatible."
-        exit 1
-      fi
-      ;;
+    "--action" | "-A") shift; ACTION="${1}";;
     "--help" | "-h") xmenu_usage; exit 0;;
     "--") shift; break;;
   esac
@@ -121,6 +89,10 @@ done
 
 #
 # Check ACTION.
+#
+# ACTION's validity must be checked after the option parsing, since the ACTION
+# variable may be set by both the -A/--action option and the environment
+# variable PASSWORD_STORE_XMENU_DEFAULT_ACTION.
 #
 [[ "${ACTION}" =~ (paste|paste-term|type|prompt|copy) ]] || {
   rperr "Valid actions are \"paste\", \"paste-term\","
