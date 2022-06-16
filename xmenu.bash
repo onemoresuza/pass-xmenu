@@ -205,7 +205,7 @@ if [ -z "${pickdmacro}" ]; then
   # For files with just a password, there's no need to prompt the user.
   #
   if [[ "${#contents[@]}" -eq 1 ]]; then
-    pickdmacro="${pickdmacro} @${contents[0]}"
+    pickdmacro="${pickdmacro} @PASSWORD"
   else
     pickdmacro="${pickdmacro} @$(
       for field in "${contents[@]}"; do
