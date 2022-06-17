@@ -1,5 +1,5 @@
 PREFIX ?= /usr
-EXTENSIONS_DIR ?= /lib/password-store/extensions
+EXTENSIONS_DIR ?= lib/password-store/extensions
 DESTDIR ?=
 SCRIPT = xmenu.bash
 TEST_SCRIPT = test_env/test.bash
