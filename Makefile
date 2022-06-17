@@ -2,7 +2,8 @@ PREFIX ?= /usr
 EXTENSIONS_DIR ?= lib/password-store/extensions
 DESTDIR ?=
 SCRIPT = xmenu.bash
-TEST_SCRIPT = test_env/test.bash
+TEST_DIR = test_env
+TEST_SCRIPT = $(TEST_DIR)/test.bash
 TEST_SCRIPT_OPTS ?=
 
 install:
@@ -15,4 +16,7 @@ uninstall:
 test:
 	bash $(TEST_SCRIPT) $(TEST_SCRIPT_OPTS)
 
-.PHONY: install uninstall test
+test-clean:
+	rm -rf $(TEST_DIR)/gnupg $(TEST_DIR)/password-store
+
+.PHONY: install uninstall test test-clean
