@@ -6,8 +6,8 @@ TEST_SCRIPT = test_env/test.bash
 TEST_SCRIPT_OPTS ?=
 
 install:
-	@install -vd $(DESTDIR)$(PREFIX)/$(EXTENSIONS_DIR) 
-	@install -vm 0755 $(SCRIPT) $(DESTDIR)$(PREFIX)/$(EXTENSIONS_DIR)
+	install -d $(DESTDIR)$(PREFIX)/$(EXTENSIONS_DIR) 
+	install -m 0755 $(SCRIPT) $(DESTDIR)$(PREFIX)/$(EXTENSIONS_DIR)
 
 uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/$(EXTENSION)
