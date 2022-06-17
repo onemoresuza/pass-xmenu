@@ -8,7 +8,6 @@
 # Don't expand expressions in single quotes.
 # shellcheck disable=SC2016
 #
-
 XMENU="${PASSWORD_STORE_XMENU:-dmenu} ${PASSWORD_STORE_XMENU_FLAGS}"
 XMENU_PROMPT_FLAG="${PASSWORD_STORE_XMENU_PROMPT_FLAG:-"-p"}"
 ACTION="${PASSWORD_STORE_XMENU_DEFAULT_ACTION:-type}"
@@ -104,8 +103,8 @@ done
 shopt -s nullglob globstar
 declare -a paths
 paths=("${PREFIX}"/**/*.gpg)
-paths=("${path[@]#"${PREFIX}/"}")
-paths=("${path[@]%.gpg}")
+paths=("${paths[@]#"${PREFIX}/"}")
+paths=("${paths[@]%.gpg}")
 shopt -u nullglob globstar
 path="$(
   printf "%s\n" "${paths[@]}" \
