@@ -10,7 +10,7 @@ install:
 	install -m 0755 $(SCRIPT) $(DESTDIR)$(PREFIX)/$(EXTENSIONS_DIR)
 
 uninstall:
-	rm -f $(DESTDIR)$(PREFIX)/$(EXTENSION)
+	rm -f $(DESTDIR)$(PREFIX)/$(EXTENSIONS_DIR)/$(SCRIPT)
 
 test:
 	bash $(TEST_SCRIPT) $(TEST_SCRIPT_OPTS)
