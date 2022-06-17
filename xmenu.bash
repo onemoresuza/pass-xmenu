@@ -101,15 +101,15 @@ done
 #
 # Prompt the user to pick a password.
 #
+shopt -s nullglob globstar
+declare -a paths
+paths=("${PREFIX}"/**/*.gpg)
+paths=("${path[@]#"${PREFIX}/"}")
+paths=("${path[@]%.gpg}")
+shopt -u nullglob globstar
 path="$(
-  find "${PREFIX}" \
-    -type f \
-    -name "*.gpg" \
-    -exec sh -c '
-      basename="${1#"${2}/"}"
-      basename="${basename%.*}"
-      printf "%s\n" "${basename}"' shell {} "${PREFIX}" \; \
-    | ${XMENU} ${XMENU_PROMPT_FLAG} "Pick a password:"
+  printf "%s\n" "${paths[@]}" \
+    | ${XMENU} ${XMENU_PROMPT_FLAG} "Pick a Password"
 )" || {
   rperr "No password picked."
   exit 1
