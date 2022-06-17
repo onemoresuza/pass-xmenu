@@ -2,6 +2,8 @@ PREFIX ?= /usr
 EXTENSIONS_DIR ?= /lib/password-store/extensions
 DESTDIR ?=
 SCRIPT = xmenu.bash
+TEST_SCRIPT = test_env/test.bash
+TEST_SCRIPT_OPTS ?=
 
 install:
 	@install -vd $(DESTDIR)$(PREFIX)/$(EXTENSIONS_DIR) 
@@ -10,4 +12,7 @@ install:
 uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/$(EXTENSION)
 
-.PHONY: install uninstall
+test:
+	bash $(TEST_SCRIPT) $(TEST_SCRIPT_OPTS)
+
+.PHONY: install uninstall test
