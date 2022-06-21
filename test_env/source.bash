@@ -23,7 +23,7 @@ check_macro() {
   # Run a macro with the action in ${1}.
   #
 
-  pass "${HASH_NAME%.bash}" -atrue -A"${1}" &
+  pass "${HASH_NAME%.bash}" -atrue -A"${1}" 1>/dev/null 2>&1 &
   printf "Username: "
   {
     sleep 0.1
@@ -77,10 +77,3 @@ printf "%s\nUsername: %s\n%s" \
 HASH_NAME="$(sha1sum xmenu.bash)"
 HASH_NAME="xmenu_$(date '+%F')_${HASH_NAME:0:13}.bash"
 install -m 0700 xmenu.bash "${PASSWORD_STORE_EXTENSIONS_DIR}/${HASH_NAME}"
-
-#
-# Check the generated key strokes
-#
-clear
-check_macro "type"
-check_macro "paste-term"
